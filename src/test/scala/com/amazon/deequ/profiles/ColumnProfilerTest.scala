@@ -45,7 +45,7 @@ class ColumnProfilerTest extends WordSpec with Matchers with SparkContextSpec
     assert(expected.sum == actual.sum)
     assert(expected.stdDev == actual.stdDev)
     // TODO disabled for now, as we get different results for Spark 2.2 and Spark 2.3
-    // assert(expected.approxPercentiles == actual.approxPercentiles)
+//     assert(expected.approxPercentiles == actual.approxPercentiles)
   }
 
   "Column Profiler" should {
@@ -517,7 +517,7 @@ class ColumnProfilerTest extends WordSpec with Matchers with SparkContextSpec
     }
   }
 
-  "return correct profile for the Titanic dataset" in withSparkSession { session =>
+  "return correct profile for thet Titanic dataset" in withSparkSession { session =>
     val data = session.read.format("csv")
       .option("inferSchema", "true")
       .option("header", "true")
@@ -527,31 +527,72 @@ class ColumnProfilerTest extends WordSpec with Matchers with SparkContextSpec
 
     val expectedProfiles = List(
       StandardColumnProfile(
-        "PassengerId",
-        1.0,
-        891,
-        DataTypeInstances.Integral,
-        false,
-        Map.empty,
-        None),
+        column = "PassengerId",
+        completeness = 1.0,
+        approximateNumDistinctValues = 891,
+        dataType = DataTypeInstances.Integral,
+        isDataTypeInferred = false,
+        typeCounts = Map.empty,
+        histogram = None),
       StandardColumnProfile(
-        "Survived",
-        1.0,
-        2,
-        DataTypeInstances.Integral,
-        false,
-        Map.empty,
-        None),
-      StandardColumnProfile("Pclass", 1.0, 3, DataTypeInstances.Integral, false, Map.empty, None),
-      StandardColumnProfile("Name", 1.0, 0, DataTypeInstances.String, true, Map.empty, None),
-      StandardColumnProfile("Sex", 1.0, 2, DataTypeInstances.String, true, Map.empty, None),
-      StandardColumnProfile("Ticket", 1.0, 681, DataTypeInstances.String, true, Map.empty, None),
-      StandardColumnProfile("Fare", 1.0, 0, DataTypeInstances.Fractional, false, Map.empty, None),
-      StandardColumnProfile("Cabin", 0.22, 0, DataTypeInstances.String, true, Map.empty, None)
+        column = "Survived",
+        completeness = 1.0,
+        approximateNumDistinctValues = 2,
+        dataType = DataTypeInstances.Integral,
+        isDataTypeInferred = false,
+        typeCounts = Map.empty,
+        histogram = None),
+      StandardColumnProfile(
+        column = "Pclass",
+        completeness =  1.0,
+        approximateNumDistinctValues = 3,
+        dataType = DataTypeInstances.Integral,
+        isDataTypeInferred = false,
+        typeCounts = Map.empty,
+        histogram = None),
+      StandardColumnProfile(
+        column = "Name",
+        completeness = 1.0,
+        approximateNumDistinctValues = 0,
+        dataType = DataTypeInstances.String,
+        isDataTypeInferred = true,
+        typeCounts = Map.empty,
+        histogram = None),
+      StandardColumnProfile(
+        column = "Sex",
+        completeness = 1.0,
+        approximateNumDistinctValues = 2,
+        dataType = DataTypeInstances.String,
+        isDataTypeInferred = true,
+        typeCounts = Map.empty,
+        histogram = None),
+      StandardColumnProfile(
+        column = "Ticket",
+        completeness = 1.0,
+        approximateNumDistinctValues = 681,
+        dataType = DataTypeInstances.String,
+        isDataTypeInferred = true,
+        typeCounts = Map.empty,
+        histogram = None),
+      StandardColumnProfile(
+        column = "Fare",
+        completeness = 1.0,
+        approximateNumDistinctValues = 0,
+        dataType = DataTypeInstances.Fractional,
+        isDataTypeInferred = false,
+        typeCounts = Map.empty,
+        histogram = None),
+      StandardColumnProfile(
+        column = "Cabin",
+        completeness = 0.22,
+        approximateNumDistinctValues = 0,
+        dataType = DataTypeInstances.String,
+        isDataTypeInferred = true,
+        typeCounts = Map.empty,
+        histogram = None)
     )
 
     assertSameColumnProfiles(columnProfiles.profiles, expectedProfiles)
-
   }
 
   private[this] def assertSameColumnProfiles(
@@ -571,7 +612,8 @@ class ColumnProfilerTest extends WordSpec with Matchers with SparkContextSpec
         assert(
           actual.approximateNumDistinctValues <= upperBound &&
           actual.approximateNumDistinctValues >= lowerBound,
-          msg)
+          msg
+        )
       }
     }
   }
