@@ -54,7 +54,7 @@ private[deequ] case class NumericColumnStatistics(
 
 private[deequ] case class CategoricalColumnStatistics(histograms: Map[String, Distribution])
 
-/** Computes single-column profiles in three scans over the data, intented for large (TB) datasets
+/** Computes single-column profiles in three scans over the data, intended for large (TB) datasets
   *
   * In the first phase, we compute the number of records, as well as the datatype, approx. num
   * distinct values and the completeness of each column in the sample.
