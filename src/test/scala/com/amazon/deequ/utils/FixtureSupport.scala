@@ -59,27 +59,6 @@ trait FixtureSupport {
 
     import sparkSession.implicits._
 
-//    val schema = new StructType()
-//      .add("dc_id", StringType)
-//      .add("lang", StringType)
-//      .add("source",
-//        MapType(
-//          StringType,
-//          new StructType()
-//            .add("description", StringType)
-//            .add("weblink", StringType)
-//            .add("ip", StringType)
-//            .add("id", LongType)
-//            .add("temp", LongType)
-//            .add("c02_level", LongType)
-//            .add("geo",
-//              new StructType()
-//                .add("lat", DoubleType)
-//                .add("long", DoubleType)
-//            )
-//        )
-//      )
-
     // Create a single entry with id and its complex and nested data types
     Seq("""
       {
