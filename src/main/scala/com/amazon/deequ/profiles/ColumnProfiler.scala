@@ -76,7 +76,7 @@ object ColumnProfiler {
    * @param data                             data dataset as dataframe
    * @param restrictToColumns                an contain a subset of columns to profile, otherwise
    *                                         all columns will be considered
-   * @param printStatusUpdates
+   * @param printStatusUpdates               boolean parameter which is true if printed status update are required
    * @param lowCardinalityHistogramThreshold the maximum (estimated) number of distinct values
    *                                         in a column until which we should compute exact
    *                                         histograms for it (defaults to 120)
